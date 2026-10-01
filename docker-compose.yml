@@ -1,0 +1,14 @@
+services:
+  obfuscationlab:
+    build: .
+    ports:
+      - "127.0.0.1:5000:5000"
+    environment:
+      SECRET_KEY: "local-docker-development-key-change-me"
+      DATABASE_PATH: "instance/obfuscationlab.sqlite3"
+      MAX_CONTENT_LENGTH: "65536"
+      MAX_SAMPLE_LENGTH: "10000"
+    volumes:
+      - ./instance:/app/instance
+      - ./reports:/app/reports
+      - ./logs:/app/logs

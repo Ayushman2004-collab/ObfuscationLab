@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero">
+  <div><p class="eyebrow">SECURITY RESEARCH / DETECTION ENGINEERING</p>
+  <h1>Transformation <span>Analysis</span></h1>
+  <p class="muted">Run reproducible, text-only experiments and observe how controlled transformations affect synthetic static signatures.</p></div>
+  <div class="hero-badge"><span class="pulse"></span> LAB MODE ACTIVE</div>
+</section>
+<div class="notice"><strong>Safety boundary:</strong> This platform accepts harmless text samples only. It does not execute content, create deployable payloads, or test real antivirus/EDR products.</div>
+<section class="metrics">
+  <article class="metric"><span>Total experiments</span><strong id="totalMetric">—</strong></article>
+  <article class="metric"><span>Original matches</span><strong id="originalMetric">—</strong></article>
+  <article class="metric"><span>Transformed matches</span><strong id="transformedMetric">—</strong></article>
+  <article class="metric"><span>Detection state changed</span><strong id="changedMetric">—</strong></article>
+</section>
+<section class="panel" id="experiment">
+  <div class="section-heading"><div><p class="eyebrow">EXPERIMENT WORKSPACE</p><h2>Configure a run</h2></div><span class="tag">API v1</span></div>
+  <form id="experimentForm">
+    <label>Experiment label<input id="label" maxlength="100" value="Marker transformation study"></label>
+    <label>Harmless text sample<textarea id="sample" maxlength="10000" required placeholder="Example: LAB_TEST_MARKER_ALPHA is a synthetic training marker."></textarea></label>
+    <p class="hint">Try a synthetic marker such as <code>LAB_TEST_MARKER_ALPHA</code> to observe deterministic matching.</p>
+    <div class="step-grid">
+      <label class="check"><input type="checkbox" value="base64" data-kind="encoder"> Base64 representation</label>
+      <label class="check"><input type="checkbox" value="rot13" data-kind="encoder"> ROT13 representation</label>
+      <label class="check"><input type="checkbox" value="xor_hex" data-kind="encoder"> XOR-to-hex (lab key)</label>
+      <label class="check"><input type="checkbox" value="split_join" data-kind="transform"> Split / join view</label>
+      <label class="check"><input type="checkbox" value="unicode_view" data-kind="transform"> Unicode escape view</label>
+      <label class="check"><input type="checkbox" value="marker_view" data-kind="transform"> Marker insertion view</label>
+    </div>
+    <label>Analyst notes<textarea id="notes" rows="2" maxlength="500" placeholder="Optional context for this experiment"></textarea></label>
+    <button id="runButton" type="submit">Run analysis <span>→</span></button>
+  </form>
+  <div id="status" role="status"></div>
+</section>
+<section class="result-grid" id="resultPanel" hidden>
+  <article class="panel"><p class="eyebrow">RESULT SUMMARY</p><h2 id="resultTitle">Experiment complete</h2><div id="resultBadges"></div>
+    <div class="hash"><span>Original SHA-256</span><code id="originalHash"></code></div>
+    <div class="hash"><span>Transformed SHA-256</span><code id="transformedHash"></code></div>
+    <div class="actions"><a id="jsonLink" href="#">JSON report ↓</a><a id="csvLink" href="#">CSV report ↓</a></div>
+  </article>
+  <article class="panel"><p class="eyebrow">TRANSFORMED TEXT</p><pre id="transformedText"></pre><button type="button" class="secondary" id="copyButton">Copy result</button></article>
+</section>
+<section class="panel" id="history">
+  <div class="section-heading"><div><p class="eyebrow">REPRODUCIBILITY</p><h2>Recent experiments</h2></div><button class="secondary" id="refreshButton">Refresh</button></div>
+  <div class="table-wrap"><table><thead><tr><th>Created</th><th>Experiment</th><th>Original</th><th>Transformed</th><th>Duration</th><th>Report</th></tr></thead><tbody id="historyBody"><tr><td colspan="6">Loading…</td></tr></tbody></table></div>
+</section>
+<section class="panel chart-panel"><div class="section-heading"><div><p class="eyebrow">OBSERVABILITY</p><h2>Detection comparison</h2></div></div><canvas id="detectionChart" height="100"></canvas></section>
+{% endblock %}
